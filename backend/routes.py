@@ -17,6 +17,7 @@ def create_person():
     try:
         data = request.json
 
+        # Validations
         required_fields = ["name", "role", "description", "gender"]
         for field in required_fields:
             if field not in data:
@@ -42,6 +43,46 @@ def create_person():
         db.session.commit()
 
         return jsonify({"msg":"Person created successfully"}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error":str(e)}), 500
+    
+
+# Delete a person
+@app.route("/api/people/<int:id>",methods=["DELETE"])
+def delete_person(id):
+    try:
+        person = Person.query.get(id)
+        if person is None:
+            return jsonify({"error":"Person not found"}), 404
+        
+        db.session.delete(person)
+        db.session.commit()
+        return jsonify({"msg":"Person deleted"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error",str(e)}), 500
+    
+
+# Update a person
+@app.route("/api/people/<int:id>",methods=["PATCH"])
+def update_person(id):
+    try:
+        person = Person.query.get(id)
+        if person is None:
+            return jsonify({"error":"Person not found"}), 404
+
+        data = request.json
+
+        person.name = data.get("name",person.name)
+        person.role = data.get("role",person.role)
+        person.description = data.get("description",person.description)
+        person.gender = data.get("gender",person.gender)
+
+        db.session.commit()
+
+        return jsonify(person.to_json()), 200
+    
     except Exception as e:
         db.session.rollback()
         return jsonify({"error":str(e)}), 500

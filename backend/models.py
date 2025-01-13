@@ -10,8 +10,8 @@ class Person(db.Model):
     img_url = db.Column(db.String(200), nullable=True)
     
 
-# when you want to send data to a client, it needs to be in json format
-# this is a convenient function to convert the date to json
+    # when you want to send data to a client, it needs to be in json format
+    # this is a convenient function to convert the date to json 
     def to_json(self):
         return {
             "id":self.id,
