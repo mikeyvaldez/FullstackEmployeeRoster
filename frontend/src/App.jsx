@@ -22,8 +22,9 @@ function App() {
           textTransform={"uppercase"}
           textAlign={"center"}
           mb={8}
+          color={"green.500"}
         >
-        <Text as={"span"} color={"green.400"} bgClip={"text"}>My Employees</Text>
+          My Employees
         </Text>
 
         <UserGrid employees={employees} setEmployees={setEmployees}/>

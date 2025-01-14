@@ -19,10 +19,6 @@ export default function Navbar({ setEmployees }) {
 
           {/* Right Side */}
           <Flex gap={3} alignItems={"center"}>
-            <Text fontSize={"lg"} fontWeight={500} display={{base: "none", md: "block"}}>
-                PLACEHOLDER
-            </Text>
-
             <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <IoMoon size={20} /> : <LuSun size={20} />}
             </Button>
