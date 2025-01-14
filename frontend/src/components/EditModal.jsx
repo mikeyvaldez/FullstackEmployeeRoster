@@ -18,6 +18,7 @@ import {
 	useDisclosure,
 } from "@chakra-ui/react";
 import { BiEditAlt } from "react-icons/bi";
+import PropTypes from "prop-types";
 
 export default function EditModal({ employee }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -77,4 +78,8 @@ export default function EditModal({ employee }) {
 			</Modal>
 		</>
 	);
+}
+
+EditModal.propTypes = {
+  employee: PropTypes.object,
 }

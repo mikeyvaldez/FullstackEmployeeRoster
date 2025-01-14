@@ -1,11 +1,18 @@
 import { Stack, Container, Text } from "@chakra-ui/react";
-import Navbar from "./components/Navbar";
-import UserGrid from "./components/EmployeeGrid";
+import Navbar from "./components/Navbar.jsx";
+import UserGrid from "./components/EmployeeGrid.jsx";
+import { useState } from "react";
 
 function App() {
+  // if we were using something like react context or redux we would place this state
+  // in the user grid only.
+  // but since it is a smaller app we pass the setEmployees to navbar and usergrid, to keep things simple
+  const [employees, setEmployees] = useState([]);
+
+
   return (
     <Stack minH={"100vh"}>
-      <Navbar />
+      <Navbar setEmployees={setEmployees} />
 
       <Container maxW={"1200px"} my={4}>
         <Text
@@ -19,7 +26,7 @@ function App() {
         <Text as={"span"} color={"green.400"} bgClip={"text"}>My Employees</Text>
         </Text>
 
-        <UserGrid />
+        <UserGrid employees={employees} setEmployees={setEmployees}/>
       </Container>
     </Stack>
   );
