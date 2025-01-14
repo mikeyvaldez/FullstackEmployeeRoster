@@ -20,8 +20,8 @@ def create_employee():
         # Validations
         required_fields = ["name", "role", "description", "gender"]
         for field in required_fields:
-            if field not in data:
-                return jsonify({"error":f"Missing required field: field"}),400
+            if field not in data or not data.get(field):
+                return jsonify({"error":f"Missing required field: {field}"}),400
 
         name = data.get("name")
         role = data.get("role")
@@ -42,7 +42,7 @@ def create_employee():
 
         db.session.commit()
 
-        return jsonify({"msg":"Employee created successfully"}), 201
+        return jsonify(new_employee.to_json()), 201
     
     except Exception as e:
         db.session.rollback()

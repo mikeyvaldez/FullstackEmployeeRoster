@@ -8,7 +8,7 @@ export default function EmployeeGrid({ employees, setEmployees }) {
 
 
   useEffect(() => {
-    console.log(typeof(setEmployees))
+    
     const getEmployees = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/employees")
@@ -37,7 +37,7 @@ export default function EmployeeGrid({ employees, setEmployees }) {
       gap={4}
       >
           {employees.map((employee) => (
-              <EmployeeCard key={employee.id} employee={employee} />
+              <EmployeeCard key={employee.id} employee={employee} setEmployees={setEmployees}/>
           ))}
       </Grid>
       {isLoading && (

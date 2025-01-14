@@ -2,9 +2,10 @@ import { Box, Button, Container, Flex, Text, useColorMode, useColorModeValue } f
 import { IoMoon } from "react-icons/io5";
 import { LuSun } from "react-icons/lu";
 import CreateUserModal from "./CreateUserModal";
+import PropTypes from "prop-types";
 
 
-export default function Navbar() {
+export default function Navbar({ setEmployees }) {
     const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -25,10 +26,14 @@ export default function Navbar() {
             <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <IoMoon size={20} /> : <LuSun size={20} />}
             </Button>
-            <CreateUserModal />
+            <CreateUserModal setEmployees={setEmployees} />
           </Flex>
         </Flex>
       </Box>
     </Container>
   );
+}
+
+Navbar.propTypes = {
+  setEmployees: PropTypes.object,
 }

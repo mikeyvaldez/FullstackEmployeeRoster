@@ -8,18 +8,53 @@ import {
   Heading,
   IconButton,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { BiTrash } from "react-icons/bi";
 import PropTypes from "prop-types";
 import EditModal from "./EditModal";
 
-export default function EmployeeCard({ employee }) {
+export default function EmployeeCard({ employee, setEmployees }) {
+  const toast = useToast();
+  
+  const handleDeleteEmployee = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/employees" + "/" + employee.id, {
+        method: "DELETE",
+      })
+      
+      const data = await res.json();
+      if(!res.ok){
+        throw new Error(data.error)
+      }
+
+      setEmployees((prevEmployees) => prevEmployees.filter((u) => u.id !== employee.id))
+      toast({
+        status: "success",
+        title: "Success",
+        description: "Employee deleted successfully.",
+        duration: 2000,
+        position: "top-center",
+      })
+
+    } catch (error) {
+      toast({
+        title: "An error occurred",
+        description: error.message,
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-center",
+      })
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
         <Flex>
           <Flex flex={"1"} gap={"4"} alignItems={"center"}>
-            <Avatar src="https://avatar.iran.liara.run/public" />
+            <Avatar src={employee.imgUrl} />
 
             <Box>
               <Heading size="sm">{employee.name}</Heading>
@@ -28,13 +63,14 @@ export default function EmployeeCard({ employee }) {
           </Flex>
 
           <Flex>
-            <EditModal employee={employee} />
+            <EditModal employee={employee} setEmployees={setEmployees} />
             <IconButton
               variant="ghost"
               colorScheme="red"
               size={"sm"}
               aria-label="See menu"
               icon={<BiTrash size={20} />}
+              onClick={handleDeleteEmployee}
             />
           </Flex>
         </Flex>
@@ -51,4 +87,5 @@ export default function EmployeeCard({ employee }) {
 
 EmployeeCard.propTypes = {
   employee: PropTypes.object,
+  setEmployees: PropTypes.array,
 }

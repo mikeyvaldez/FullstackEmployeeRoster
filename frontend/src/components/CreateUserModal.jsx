@@ -15,11 +15,13 @@ import {
   RadioGroup,
   Textarea,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { BiAddToQueue } from "react-icons/bi";
 
-const CreateUserModal = () => {
+export default function CreateUserModal({ setEmployees }){
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const [inputs, setInputs] = useState({
@@ -29,6 +31,56 @@ const CreateUserModal = () => {
     gender: "",
   });
 
+  const toast = useToast();
+
+  const handleCreateEmployee = async (e) => {
+    e.preventDefault();  // prevents the page from refreshing
+    try {
+      const res = await fetch("http://localhost:5000/api/employees", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputs),
+      })
+
+      const data = await res.json();
+
+      if(!res.ok){
+        throw new Error(data.error)
+      }
+
+      toast({
+        status: "success",
+        title: "Whoopty-doo-basil!",
+        description: "Employee created successfully.",
+        duration: 2000,
+        position: "top-center",
+      })
+
+      onClose();
+      setEmployees((prevEmployees) => [...prevEmployees, data])
+
+      setInputs({
+        name: "",
+        role: "",
+        description: "",
+        gender: "",
+      })
+
+    } catch (error) {
+      toast({
+        status: "error",
+        title: "An error occurred.",
+        description: error.message,
+        duration: 4000,
+      })
+    } finally {
+      setIsLoading(false);
+      
+    }
+  }
+
   return (
     <>
       <Button onClick={onOpen}>
@@ -37,68 +89,88 @@ const CreateUserModal = () => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>My Employees</ModalHeader>
-          <ModalCloseButton />
+        <form onSubmit={handleCreateEmployee}>
+          <ModalContent>
+            <ModalHeader>My Employees</ModalHeader>
+            <ModalCloseButton />
 
-          <ModalBody pb={6}>
-            <Flex alignItems={"center"} gap={4}>
-              {/* Left */}
-              <FormControl>
-                <FormLabel>Full Name</FormLabel>
-                <Input placeholder="John Doe"
-                value={inputs.name}
-                onChange={(e) => setInputs({...inputs, name: e.target.value})}
-                />
-              </FormControl>
+            <ModalBody pb={6}>
+              <Flex alignItems={"center"} gap={4}>
+                {/* Left */}
+                <FormControl>
+                  <FormLabel>Full Name</FormLabel>
+                  <Input
+                    placeholder="John Doe"
+                    value={inputs.name}
+                    onChange={(e) =>
+                      setInputs({ ...inputs, name: e.target.value })
+                    }
+                  />
+                </FormControl>
 
-              {/* Right */}
-              <FormControl>
-                <FormLabel>Role</FormLabel>
-                <Input
-                  placeholder="Software Engineer"
-                  value={inputs.role}
+                {/* Right */}
+                <FormControl>
+                  <FormLabel>Role</FormLabel>
+                  <Input
+                    placeholder="Software Engineer"
+                    value={inputs.role}
+                    onChange={(e) =>
+                      setInputs({ ...inputs, role: e.target.value })
+                    }
+                  />
+                </FormControl>
+              </Flex>
+
+              <FormControl mt={4}>
+                <FormLabel>Description</FormLabel>
+                <Textarea
+                  resize={"none"}
+                  overflowY={"hidden"}
+                  placeholder="He's a software engineer who loves to code and build things."
+                  value={inputs.description}
                   onChange={(e) =>
-                    setInputs({ ...inputs, name: e.target.value })
+                    setInputs({ ...inputs, description: e.target.value })
                   }
                 />
               </FormControl>
-            </Flex>
 
-            <FormControl mt={4}>
-              <FormLabel>Description</FormLabel>
-              <Textarea
-                resize={"none"}
-                overflowY={"hidden"}
-                placeholder="He's a software engineer who loves to code and build things."
-                value={inputs.description}
-                  onChange={(e) => setInputs({...inputs, name: e.target.value})}
-              />
-            </FormControl>
+              <RadioGroup mt={4}>
+                <Flex gap={5}>
+                  <Radio
+                    value="male"
+                    onChange={(e) =>
+                      setInputs({ ...inputs, gender: e.target.value })
+                    }
+                  >
+                    Male
+                  </Radio>
+                  <Radio
+                    value="female"
+                    onChange={(e) =>
+                      setInputs({ ...inputs, gender: e.target.value })
+                    }
+                  >
+                    Female
+                  </Radio>
+                </Flex>
+              </RadioGroup>
+            </ModalBody>
 
-            <RadioGroup mt={4}>
-              <Flex gap={5}>
-                <Radio
-                value={inputs.name}
-                onChange={(e) => setInputs({...inputs, name: e.target.value})}
-                >Male</Radio>
-                <Radio
-                value={inputs.name}
-                  onChange={(e) => setInputs({...inputs, name: e.target.value})}
-                >Female</Radio>
-              </Flex>
-            </RadioGroup>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} type="submit">
-              Add
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} type="submit" isLoading={isLoading}>
+                Add
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </form>
       </Modal>
     </>
   );
 };
-export default CreateUserModal;
+
+
+
+CreateUserModal.propTypes = {
+  setEmployees: PropTypes.object,
+}
