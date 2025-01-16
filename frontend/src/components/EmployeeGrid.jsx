@@ -49,7 +49,8 @@ export default function EmployeeGrid({ employees, setEmployees }) {
         <Flex justifyContent={"center"}>
           <Text fontSize={"xl"}>
             <Text as={"span"} fontSize={"2xl"} fontWeight={"bold"} mr={2}>
-              Awwww!...... Poor you...
+              Api must be ran locally. This ensures users data is securely managed.
+              If you want more details on this project please contact the creator: https://www.linkedin.com/in/michael-valdez-a29179260/
             </Text>
           </Text>
         </Flex>
