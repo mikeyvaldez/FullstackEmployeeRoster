@@ -8,7 +8,8 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///employees.db"
+
 app.config["SQLACHEMY_TRACK_MODIFICATIONS"] = False
 
 
