@@ -14,7 +14,7 @@ export default function Navbar({ setEmployees }) {
         <Flex h={"16"} alignItems={"center"} justifyContent={"space-between"}>
           {/* Left side */}
           <Flex alignItems={"center"} justifyContent={"center"} gap={3} display={{base:"none", sm:"flex"}}>
-            <Text fontSize={"50px"} color={"green.300"}>Employee Roster</Text>
+            <Text fontSize={"50px"} color={"green.300"}>Roster</Text>
           </Flex>
 
           {/* Right Side */}
