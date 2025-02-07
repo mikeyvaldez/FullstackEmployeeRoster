@@ -2,64 +2,80 @@ import { Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 import EmployeeCard from "./EmployeeCard.jsx";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useUserContext } from "../context/userContext.jsx";
+import { getTokenFromCookie } from "../utils/auth.js";
 
 export default function EmployeeGrid({ employees, setEmployees }) {
   const [isLoading, setIsLoading] = useState(true);
-
+  const { userInfo } = useUserContext();
+  // console.log(userInfo)
 
   useEffect(() => {
-    
     const getEmployees = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/employees")
-        const data = await res.json();
+        // Retrieve the token from localStorage
+        const token = getTokenFromCookie();
+        // console.log(token)
+
         
-        if(!res.ok){
-          throw new Error(data.error);
+        const res = await fetch("/api/employee/get_employees", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data?.error || "Failed to fetch employees.");
         }
-        setEmployees(data)
+        setEmployees(data);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching employees:", error);
       } finally {
         setIsLoading(false);
       }
-    }
-    getEmployees()
-  }, [setEmployees])
+    };
+    getEmployees();
+  }, [setEmployees]);
 
   return (
-    <>    
-      <Grid templateColumns={{
+    <>
+      <Grid
+        templateColumns={{
           base: "1fr",
           md: "repeat(2, 1fr)",
           lg: "repeat(3, 1fr)",
-      }}
-      gap={4}
+        }}
+        gap={4}
       >
-          {employees.map((employee) => (
-              <EmployeeCard key={employee.id} employee={employee} setEmployees={setEmployees}/>
-          ))}
+        {employees.map((employee) => (
+          <EmployeeCard
+            key={employee.id}
+            employee={employee}
+            setEmployees={setEmployees}
+          />
+        ))}
       </Grid>
       {isLoading && (
         <Flex justifyContent={"center"}>
-          <Spinner size={"xl"} />          
+          <Spinner size={"xl"} />
         </Flex>
       )}
       {!isLoading && employees.length === 0 && (
         <Flex justifyContent={"center"}>
           <Text fontSize={"xl"}>
             <Text as={"span"} fontSize={"2xl"} fontWeight={"bold"} mr={2}>
-              Api must be ran locally. This ensures users data is securely managed.
-              If you want more details on this project please contact the creator: https://www.linkedin.com/in/michael-valdez-a29179260/
-            </Text>
+              You have no Employees
+            </Text>                        
           </Text>
         </Flex>
       )}
     </>
-  )
+  );
 }
-
 EmployeeGrid.propTypes = {
   employees: PropTypes.array,
   setEmployees: PropTypes.func,
-}
+};

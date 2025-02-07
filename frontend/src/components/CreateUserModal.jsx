@@ -20,6 +20,7 @@ import {
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { BiAddToQueue } from "react-icons/bi";
+import { getTokenFromCookie } from "../utils/auth";
 
 export default function CreateUserModal({ setEmployees }){
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,23 +34,21 @@ export default function CreateUserModal({ setEmployees }){
 
   const toast = useToast();
 
-  const handleCreateEmployee = async (e) => {
-    e.preventDefault();  // prevents the page from refreshing
+  const handleCreateEmployee = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/employees", {
+      const token = getTokenFromCookie();      
+
+      const res = await fetch("/api/employee/create_employee", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(inputs),
       })
 
       const data = await res.json();
-
-      if(!res.ok){
-        throw new Error(data.error)
-      }
-
+     
       toast({
         status: "success",
         title: "Whoopty-doo-basil!",
@@ -69,16 +68,9 @@ export default function CreateUserModal({ setEmployees }){
       })
 
     } catch (error) {
-      toast({
-        status: "error",
-        title: "An error occurred.",
-        description: error.message,
-        duration: 4000,
-      })
-    } finally {
-      setIsLoading(false);
-      
-    }
+      throw new Error(error)      
+    } 
+    setIsLoading(false)
   }
 
   return (
@@ -172,5 +164,5 @@ export default function CreateUserModal({ setEmployees }){
 
 
 CreateUserModal.propTypes = {
-  setEmployees: PropTypes.object,
+  setEmployees: PropTypes.func,
 }

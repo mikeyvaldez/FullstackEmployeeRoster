@@ -19,7 +19,7 @@ export default function EmployeeCard({ employee, setEmployees }) {
   
   const handleDeleteEmployee = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/employees" + "/" + employee.id, {
+      const res = await fetch("/api/employee" + "/" + employee.id, {
         method: "DELETE",
       })
       
@@ -87,5 +87,5 @@ export default function EmployeeCard({ employee, setEmployees }) {
 
 EmployeeCard.propTypes = {
   employee: PropTypes.object,
-  setEmployees: PropTypes.array,
+  setEmployees: PropTypes.func,
 }

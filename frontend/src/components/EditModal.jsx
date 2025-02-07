@@ -37,7 +37,7 @@ export default function EditModal({ employee, setEmployees }) {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			const res = await fetch("http://localhost:5000/api/employees" + "/" + employee.id, {
+			const res = await fetch("/api/employee" + "/" + employee.id, {
 				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",
@@ -134,5 +134,5 @@ export default function EditModal({ employee, setEmployees }) {
 
 EditModal.propTypes = {
   employee: PropTypes.object,
-  setEmployees: PropTypes.array,
+  setEmployees: PropTypes.func,
 }
