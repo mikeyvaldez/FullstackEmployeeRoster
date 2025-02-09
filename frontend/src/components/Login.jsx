@@ -34,7 +34,7 @@ export default function Login() {
         isClosable: true,
         position: "bottom",
       });
-      setLoading(false); // Disable button while submitting
+      setLoading(false);
       return;
     }
 
