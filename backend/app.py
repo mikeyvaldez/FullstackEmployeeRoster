@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://e-roster.netlify.app"])
 
 #sqlite for development, postgres for production
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')  # PostgreSQL connection URI
