@@ -91,7 +91,7 @@ export default function SignUp() {
         position: "bottom",
       });
     } finally {
-      setLoading(false); // Re-enable button after submission
+      setLoading(false); 
     }
   };
 
