@@ -1,17 +1,20 @@
 # This file needs to be updated before deployment
-
 from flask import Flask, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-
-app.config["SQLACHEMY_TRACK_MODIFICATIONS"] = False
-
+#sqlite for development, postgres for production
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')  # PostgreSQL connection URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Avoid overhead of tracking modifications
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')  # Use environment variable for secret key
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')  # Use environment variable for JWT secret
 
 db = SQLAlchemy(app)
 
@@ -26,15 +29,11 @@ def index(filename):
         filename = "index.html"
     return send_from_directory(dist_folder,filename)
 
-
 # api routes
 import routes
 
 with app.app_context():
     db.create_all()
 
-
-# This will only run if the file is ran directly(./app.py)
-# so anything imported from db.py will not run
-if __name__ == "__main__": # needs to evaluate to true in order to run
+if __name__ == "__main__":
     app.run(debug=True)
