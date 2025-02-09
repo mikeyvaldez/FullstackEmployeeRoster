@@ -72,7 +72,7 @@ export default function SignUp() {
 
       setTimeout(() => {
         window.location.reload();
-      }, 2000); // Delay the reload for 2 seconds
+      }, 2000); 
 
       toast({
         title: "Registration Successful",
