@@ -22,7 +22,6 @@ import { useState } from "react";
 import { BiAddToQueue } from "react-icons/bi";
 import { getTokenFromCookie } from "../utils/auth";
 
-const vite_api_url = import.meta.env.VITE_API_URL
 
 export default function CreateUserModal({ setEmployees }){
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,7 +39,7 @@ export default function CreateUserModal({ setEmployees }){
     try {
       const token = getTokenFromCookie();      
 
-      const res = await fetch(`${vite_api_url}/api/employee/create_employee`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/employee/create_employee`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

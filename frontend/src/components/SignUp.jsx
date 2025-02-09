@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-const vite_api_url = import.meta.env.VITE_API_URL
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -50,7 +49,7 @@ export default function SignUp() {
     setLoading(true); // Disable button while submitting
 
     try {
-      const response = await fetch(`${vite_api_url}/api/register`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

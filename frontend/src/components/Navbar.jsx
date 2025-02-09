@@ -18,7 +18,7 @@ import "../assets/navStyles.css";
 import { getTokenFromCookie } from "../utils/auth.js";
 import PropTypes from "prop-types";
 
-const vite_api_url = import.meta.env.VITE_API_URL
+
 
 // The navbar handles the theme
 export default function Navbar({ setEmployees }) {
@@ -38,7 +38,7 @@ export default function Navbar({ setEmployees }) {
         const token = getTokenFromCookie();
 
         // Send DELETE request to the server to delete the current user
-        const response = await fetch(`${vite_api_url}/api/delete_user`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/delete_user`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",

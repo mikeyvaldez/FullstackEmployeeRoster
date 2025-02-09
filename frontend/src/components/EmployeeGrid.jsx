@@ -2,10 +2,10 @@ import { Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 import EmployeeCard from "./EmployeeCard.jsx";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useUserContext } from "../context/userContext.jsx";
+// import { useUserContext } from "../context/userContext.jsx";
 import { getTokenFromCookie } from "../utils/auth.js";
 
-const vite_api_url = import.meta.env.VITE_API_URL
+
 
 export default function EmployeeGrid({ employees, setEmployees }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +19,7 @@ export default function EmployeeGrid({ employees, setEmployees }) {
         // console.log(token)
 
         
-        const res = await fetch(`${vite_api_url}/api/employee/get_employees`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/employee/get_employees`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

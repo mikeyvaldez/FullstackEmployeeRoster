@@ -22,7 +22,6 @@ import { BiEditAlt } from "react-icons/bi";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
-const vite_api_url = import.meta.env.VITE_API_URL
 
 export default function EditModal({ employee, setEmployees }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,7 +38,7 @@ export default function EditModal({ employee, setEmployees }) {
 		e.preventDefault();
 		setIsLoading(true);
 		try {
-			const res = await fetch(`${vite_api_url}/api/employee` + "/" + employee.id, {
+			const res = await fetch(`${import.meta.env.VITE_API_URL}/api/employee` + "/" + employee.id, {
 				method: "PATCH",
 				headers: {
 					"Content-Type": "application/json",

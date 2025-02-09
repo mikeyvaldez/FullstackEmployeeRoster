@@ -12,7 +12,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { useUserContext } from "../context/userContext.jsx"; // Import useUserContext
 
-const vite_api_url = import.meta.env.VITE_API_URL
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -40,7 +39,7 @@ export default function Login() {
 
 
     try {
-      const response = await fetch(`${vite_api_url}/api/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

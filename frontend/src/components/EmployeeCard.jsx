@@ -14,14 +14,13 @@ import { BiTrash } from "react-icons/bi";
 import PropTypes from "prop-types";
 import EditModal from "./EditModal";
 
-const vite_api_url = import.meta.env.VITE_API_URL
 
 export default function EmployeeCard({ employee, setEmployees }) {
   const toast = useToast();
   
   const handleDeleteEmployee = async () => {
     try {
-      const res = await fetch(`${vite_api_url}/api/employee` + "/" + employee.id, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/employee` + "/" + employee.id, {
         method: "DELETE",
       })
       
